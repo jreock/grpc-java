@@ -28,6 +28,10 @@ subprojects {
         mavenLocal()
     }
 
+    tasks.withType(Test) {
+        maxParallelForks = 4
+    }
+
     tasks.withType(JavaCompile) {
         it.options.compilerArgs += [
             "-Xlint:all",
