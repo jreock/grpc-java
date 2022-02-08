@@ -122,5 +122,5 @@ buildCache {
       creds.password = System.getenv("GRADLE_ENTERPRISE_CACHE_PASSWORD")
     }
     enabled = true                              // must be true for this experiment
-    push = System.getenv('BUILD_URL') != null   // adjust to an env var that is always present only in your CI environment
+    push = System.getenv('PUSH_REMOTE') != null   // adjust to an env var that is always present only in your CI environment
 }}
