@@ -27,6 +27,7 @@ bazel-testlogs
 .project
 .settings
 .gitignore
+
 bin
 
 # OS X
@@ -41,3 +42,11 @@ qemu-arm-static
 
 # Temporary output dir for artifacts
 mvn-artifacts
+
+*.sh
+gradle-enterprise-gradle-build-validation/
+lib/
+
+
+
+
