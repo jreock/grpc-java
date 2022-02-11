@@ -81,7 +81,7 @@ subprojects {
                     all().each { task ->
                         // Recompile protos when build.gradle has been changed, because
                         // it's possible the version of protoc has been changed.
-                        task.inputs.file "${rootProject.projectDir}/build.gradle"
+                        task.inputs.file("${rootProject.projectDir}/build.gradle").withPropertyName("build.gradle").withPathSensitivity(PathSensitivity.RELATIVE) 
                         if (isAndroid) {
                             task.builtins {
                                 java { option 'lite' }
@@ -339,7 +339,14 @@ subprojects {
     plugins.withId("java-library") {
         // Detect Maven Enforcer's dependencyConvergence failures. We only care
         // for artifacts used as libraries by others with Maven.
+        
         tasks.register('checkUpperBoundDeps') {
+            inputs.files(configurations.runtimeClasspath)
+            inputs.property('version',project.version)
+            inputs.property('displayName',project.name)
+            File aFile = new File("${project.buildDir}/build/upperBoundDeps")
+            outputs.dir(aFile)
+   
             doLast {
                 requireUpperBoundDepsMatch(configurations.runtimeClasspath, project)
             }
@@ -536,7 +543,7 @@ class DepAndParents {
  * This is essentially the same as if we used Maven Enforcer's
  * requireUpperBoundDeps for our artifacts.
  */
-def requireUpperBoundDepsMatch(Configuration conf, Project project) {
+static void requireUpperBoundDepsMatch(Configuration conf, Project project) {
     // artifact name => version
     Map<String,String> golden = conf.resolvedConfiguration.resolvedArtifacts.collectEntries {
         ResolvedArtifact it ->
@@ -577,4 +584,7 @@ def requireUpperBoundDepsMatch(Configuration conf, Project project) {
                 dep: it, parents: depAndParents.parents + [artifact + ":" + version]))
         }
     }
+   // file(aFile,"queue.txt").withWriter { 
+   //     it.write(queue.toString())
+   // }
 }
