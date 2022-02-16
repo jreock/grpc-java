@@ -27,7 +27,7 @@ pluginManagement {
 
 plugins {
     id "com.gradle.enterprise" version "3.8.1"
-    id "com.gradle.common-custom-user-data-gradle-plugin" version "1.6.2"
+    id "com.gradle.common-custom-user-data-gradle-plugin" version "1.6.3"
 }
 
 gradleEnterprise {
@@ -35,6 +35,7 @@ gradleEnterprise {
         capture {
             taskInputFiles = true
         }
+        uploadInBackground = System.getenv("CI") == null
     }
     server = "https://events.gradle.com" 
 }
